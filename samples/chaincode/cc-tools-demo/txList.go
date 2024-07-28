@@ -1,7 +1,7 @@
 package main
 
 import (
-	txdefs "github.com/hyperledger-labs/cc-tools-demo/chaincode/txdefs"
+	txdefs "github.com/hyperledger/fabric-private-chaincode/samples/chaincode/cc-tools-demo/txdefs"
 
 	tx "github.com/hyperledger-labs/cc-tools/transactions"
 )

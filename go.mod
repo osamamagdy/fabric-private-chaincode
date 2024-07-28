@@ -23,7 +23,7 @@ replace google.golang.org/grpc => google.golang.org/grpc v1.29.1
 require (
 	github.com/client9/misspell v0.3.4
 	github.com/golang/protobuf v1.5.3
-	github.com/hyperledger/fabric v1.4.0-rc1.0.20230405174026-695dd57e01c2
+	github.com/hyperledger/fabric v2.1.1+incompatible
 	github.com/hyperledger/fabric-chaincode-go v0.0.0-20230228194215-b84622ba6a7a
 	github.com/hyperledger/fabric-contract-api-go v1.2.1
 	github.com/hyperledger/fabric-protos-go v0.3.0
@@ -85,8 +85,10 @@ require (
 	github.com/google/certificate-transparency-go v1.0.21 // indirect
 	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/pprof v0.0.0-20230817174616-7a8ec2ada47b // indirect
+	github.com/google/uuid v1.3.0 // indirect
 	github.com/grpc-ecosystem/go-grpc-middleware v1.4.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
+	github.com/hyperledger-labs/cc-tools v1.0.0 // indirect
 	github.com/hyperledger/fabric-amcl v0.0.0-20230602173724-9e02669dceb2 // indirect
 	github.com/hyperledger/fabric-config v0.1.0 // indirect
 	github.com/hyperledger/fabric-lib-go v1.0.0 // indirect

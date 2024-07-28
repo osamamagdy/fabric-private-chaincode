@@ -1,4 +1,4 @@
 TOP = ../../..
 include $(TOP)/ecc_go/build.mk
 
-CC_NAME ?= cc-tools-demo
+CC_NAME ?= fpc-cc-tools-demo

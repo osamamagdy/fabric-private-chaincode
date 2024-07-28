@@ -19,7 +19,7 @@ var UpdateBookTenant = tx.Transaction{
 	Method:      "PUT",
 	Callers: []accesscontrol.Caller{ // Any org can call this transaction
 		{MSP: `$org\dMSP`},
-		{MSP: "orgMSP"},
+		{MSP: "Org1MSP"},
 	},
 
 	Args: []tx.Argument{

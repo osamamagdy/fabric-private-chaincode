@@ -4,16 +4,20 @@ import (
 	"flag"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
-	"github.com/hyperledger-labs/cc-tools-demo/chaincode/assettypes"
-	"github.com/hyperledger-labs/cc-tools-demo/chaincode/datatypes"
-	"github.com/hyperledger-labs/cc-tools-demo/chaincode/header"
 	"github.com/hyperledger-labs/cc-tools/assets"
 	"github.com/hyperledger-labs/cc-tools/events"
 	sw "github.com/hyperledger-labs/cc-tools/stubwrapper"
 	tx "github.com/hyperledger-labs/cc-tools/transactions"
+	"github.com/hyperledger/fabric-private-chaincode/samples/chaincode/cc-tools-demo/assettypes"
+	"github.com/hyperledger/fabric-private-chaincode/samples/chaincode/cc-tools-demo/datatypes"
+	"github.com/hyperledger/fabric-private-chaincode/samples/chaincode/cc-tools-demo/header"
 
+	fpc "github.com/hyperledger/fabric-private-chaincode/ecc_go/chaincode"
+
+	"github.com/hyperledger/fabric-chaincode-go/pkg/cid"
 	"github.com/hyperledger/fabric-chaincode-go/shim"
 	pb "github.com/hyperledger/fabric-protos-go/peer"
 )
@@ -62,9 +66,85 @@ func main() {
 	if err != nil {
 		return
 	}
-	if err = shim.Start(new(CCDemo)); err != nil {
+
+	// if os.Getenv("RUN_CCAAS") == "true" {
+	err = runCCaaS()
+	// } else {
+	// 	err = shim.Start(fpc.NewPrivateChaincode(new(CCDemo)))
+	// 	// err = shim.Start(new(CCDemo))
+	// }
+
+	if err != nil {
 		fmt.Printf("Error starting chaincode: %s", err)
 	}
+}
+
+func runCCaaS() error {
+	address := os.Getenv("CHAINCODE_SERVER_ADDRESS")
+	ccid := os.Getenv("CHAINCODE_PKG_ID")
+
+	tlsProps, err := getTLSProperties()
+	if err != nil {
+		return err
+	}
+
+	server := &shim.ChaincodeServer{
+		CCID:     ccid,
+		Address:  address,
+		CC:       fpc.NewPrivateChaincode(new(CCDemo)),
+		TLSProps: *tlsProps,
+	}
+
+	// server := &shim.ChaincodeServer{
+	// 	CCID:     ccid,
+	// 	Address:  address,
+	// 	CC:       new(CCDemo),
+	// 	TLSProps: *tlsProps,
+	// }
+
+	return server.Start()
+}
+
+func getTLSProperties() (*shim.TLSProperties, error) {
+	if enableTLS := os.Getenv("TLS_ENABLED"); enableTLS != "true" {
+		return &shim.TLSProperties{
+			Disabled: true,
+		}, nil
+	}
+
+	log.Printf("TLS enabled")
+
+	// Get key
+	keyPath := os.Getenv("KEY_PATH")
+	key, err := os.ReadFile(keyPath)
+
+	if err != nil {
+		fmt.Println("Failed to read key file")
+		return nil, err
+	}
+
+	// Get cert
+	certPath := os.Getenv("CERT_PATH")
+	cert, err := os.ReadFile(certPath)
+	if err != nil {
+		fmt.Println("Failed to read cert file")
+		return nil, err
+	}
+
+	// Get CA cert
+	clientCertPath := os.Getenv("CA_CERT_PATH")
+	caCert, err := os.ReadFile(clientCertPath)
+	if err != nil {
+		fmt.Println("Failed to read CA cert file")
+		return nil, err
+	}
+
+	return &shim.TLSProperties{
+		Disabled:      false,
+		Key:           key,
+		Cert:          cert,
+		ClientCACerts: caCert,
+	}, nil
 }
 
 // CCDemo implements the shim.Chaincode interface
@@ -120,6 +200,8 @@ func InitFunc(stub shim.ChaincodeStubInterface) (response pb.Response) {
 func (t *CCDemo) Invoke(stub shim.ChaincodeStubInterface) (response pb.Response) {
 	// Defer logging function
 	defer logTx(stub, time.Now(), &response)
+	myId, _ := cid.GetMSPID(stub)
+	fmt.Println("org is.......", myId)
 
 	if !startupCheckExecuted {
 		fmt.Println("Running startup check...")

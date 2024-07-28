@@ -19,7 +19,7 @@ var GetNumberOfBooksFromLibrary = tx.Transaction{
 	Method:      "GET",
 	Callers: []accesscontrol.Caller{ // Only org2 can call this transaction
 		{MSP: "org2MSP"},
-		{MSP: "orgMSP"},
+		{MSP: "Org1MSP"},
 	},
 
 	Args: []tx.Argument{

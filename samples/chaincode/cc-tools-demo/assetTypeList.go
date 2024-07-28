@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/hyperledger-labs/cc-tools-demo/chaincode/assettypes"
 	"github.com/hyperledger-labs/cc-tools/assets"
+	"github.com/hyperledger/fabric-private-chaincode/samples/chaincode/cc-tools-demo/assettypes"
 )
 
 var assetTypeList = []assets.AssetType{

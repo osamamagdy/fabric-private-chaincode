@@ -20,7 +20,7 @@ var GetBooksByAuthor = tx.Transaction{
 	Callers: []accesscontrol.Caller{ // Only org1 and org2 can call this transaction
 		{MSP: "org1MSP"},
 		{MSP: "org2MSP"},
-		{MSP: "orgMSP"},
+		{MSP: "Org1MSP"},
 	},
 
 	Args: []tx.Argument{

@@ -25,7 +25,7 @@ var CreateNewLibrary = tx.Transaction{
 			OU:  "admin",
 		},
 		{
-			MSP: "orgMSP",
+			MSP: "Org1MSP",
 			OU:  "admin",
 		},
 	},
