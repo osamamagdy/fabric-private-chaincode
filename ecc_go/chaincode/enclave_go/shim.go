@@ -178,7 +178,7 @@ func (f *FpcStubInterface) SplitCompositeKey(compositeKey string) (string, []str
 }
 
 func (f *FpcStubInterface) GetQueryResult(query string) (shim.StateQueryIteratorInterface, error) {
-	panic("not implemented") // TODO: Implemen
+	panic("not implemented") // TODO: Implement
 }
 
 func (f *FpcStubInterface) GetQueryResultWithPagination(query string, pageSize int32, bookmark string) (shim.StateQueryIteratorInterface, *pb.QueryResponseMetadata, error) {
